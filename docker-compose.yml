@@ -1,0 +1,30 @@
+version: "2"
+
+services:
+  avaliacao-front-end:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_VERSION: ${NODE_VERSION}
+    image: avaliacao-front-end
+    container_name: avaliacao-front-end
+    restart: always
+    volumes:
+      - "${APP_DIR}:/var/www/html"
+      - "node-modules:/var/www/html/node_modules"
+    networks:
+      - venus
+    environment:
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      VIRTUAL_PORT: ${VIRTUAL_PORT}
+      LETSENCRYPT_HOST: ${VIRTUAL_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+    command: npm run dev
+
+networks:
+  venus:
+    external: true
+
+volumes:
+  node-modules: {}
